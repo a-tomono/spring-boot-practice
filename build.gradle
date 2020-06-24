@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'groovy'
 }
 
 group = 'com.example'
@@ -11,6 +12,14 @@ sourceCompatibility = '11'
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
+	}
+}
+
+sourceSets {
+	test {
+		groovy {
+			srcDirs = ['src/test/groovy']
+		}
 	}
 }
 
@@ -27,6 +36,13 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+
+	// mandatory dependencies for using Spock
+	compile "org.codehaus.groovy:groovy-all:2.5.8"
+	testCompile platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
+	testCompile "org.spockframework:spock-core"
+	testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4-rc-3'
+
 }
 
 test {
