@@ -10,10 +10,21 @@ class ContractSpec extends Specification {
         def contract = new Contract();
         contract.draft();
 
+        expect:
+        contract.review();
+        contract.isReviewed();
+
+    }
+
+    def "初期状態はレビューできない"(){
+        setup:
+        def contract = new Contract();
+
         when:
         contract.review();
 
         then:
-        contract.isReviewed();
+        def e = thrown(RuntimeException.class);
+        e.message == "can not review this contract";
     }
 }
