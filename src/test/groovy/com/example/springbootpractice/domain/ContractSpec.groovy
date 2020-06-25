@@ -25,6 +25,7 @@ class ContractSpec extends Specification {
 
         then:
         def e = thrown(RuntimeException.class);
+        e.class == RuntimeException.class;
         e.message == "can not review this contract";
     }
 }
