@@ -1,5 +1,8 @@
 package com.example.springbootpractice.service;
 
+import com.example.springbootpractice.command.ContractCreateCommand;
+import com.example.springbootpractice.command.ContractDraftCommand;
+
 import java.util.ArrayList;
 
 public interface IContractService {
@@ -8,6 +11,8 @@ public interface IContractService {
 
     ContractDto findById(Long id);
 
-    Long create(ContractCreateCommand contract);
+    Long create(ContractCreateCommand command);
+
+    Long draft(Long id, ContractDraftCommand command);
 
 }

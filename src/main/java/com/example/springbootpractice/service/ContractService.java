@@ -1,5 +1,7 @@
 package com.example.springbootpractice.service;
 
+import com.example.springbootpractice.command.ContractCreateCommand;
+import com.example.springbootpractice.command.ContractDraftCommand;
 import com.example.springbootpractice.domain.Contract;
 import com.example.springbootpractice.domain.ContractRepository;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +34,13 @@ public class ContractService implements IContractService {
         Contract target = new Contract(
                 command.getContractName(),
                 command.getContractAbstract());
+        return repo.save(target);
+    }
+
+    @Override
+    public Long draft(Long id, ContractDraftCommand command) {
+        Contract target = repo.findById(id).orElseThrow();
+        target.draft(command.getContractName(), command.getContractAbstract());
         return repo.save(target);
     }
 }
