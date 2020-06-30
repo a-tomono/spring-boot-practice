@@ -1,6 +1,7 @@
 package com.example.springbootpractice.api;
 
-import com.example.springbootpractice.domain.Contract;
+import com.example.springbootpractice.service.ContractCreateCommand;
+import com.example.springbootpractice.service.ContractDto;
 import com.example.springbootpractice.service.IContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,18 +19,18 @@ public class ContractRestController {
 
     @GetMapping("/contracts")
     public ResponseEntity getContracts(){
-        ArrayList<Contract> result = service.getContract();
+        ArrayList<ContractDto> result = service.getContract();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/contracts/{id}")
     public ResponseEntity getContractById(@PathVariable("id") Long id){
-        Contract contract = service.findById(id);
+        ContractDto contract = service.findById(id);
         return new ResponseEntity<>(contract,HttpStatus.OK);
     }
 
     @PostMapping("/contracts")
-    public String createContract(@RequestParam("contractName") String contractName){
-        return "1";
+    public Long createContract(@RequestBody ContractCreateCommand contract){
+        return service.create(contract);
     }
 }

@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import java.time.LocalDate;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Contract {
@@ -21,10 +20,16 @@ public class Contract {
     private String contractAbstract;
     //   private Person kou;
     //   private Person otsu;
+    private LocalDate createDate = LocalDate.now();
     private LocalDate draftDate;
     private LocalDate reviewedDate;
     private LocalDate conclusionDate;
     private ContractStatus status = ContractStatus.INITIALIZED;
+
+    public Contract(String contractName, String contractAbstract) {
+        this.contractName = contractName;
+        this.contractAbstract = contractAbstract;
+    }
 
     public void draft() {
         if (isConclusion()) {
@@ -54,18 +59,15 @@ public class Contract {
     }
 
     public boolean isDraft() {
-        if (status.equals(ContractStatus.DRAFT)) return true;
-        return false;
+        return status.equals(ContractStatus.DRAFT);
     }
 
     public boolean isReviewed() {
-        if (status.equals(ContractStatus.REVIEWED)) return true;
-        return false;
+        return status.equals(ContractStatus.REVIEWED);
     }
 
     public boolean isConclusion() {
-        if (status.equals(ContractStatus.CONCLUSION)) return true;
-        return false;
+        return status.equals(ContractStatus.CONCLUSION);
     }
 
 }

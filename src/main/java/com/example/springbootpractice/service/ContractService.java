@@ -2,29 +2,36 @@ package com.example.springbootpractice.service;
 
 import com.example.springbootpractice.domain.Contract;
 import com.example.springbootpractice.domain.ContractRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
-public class ContractService implements IContractService{
+public class ContractService implements IContractService {
 
     @Autowired
     ContractRepository repo;
 
     @Override
-    public ArrayList<Contract> getContract() {
+    public ArrayList<ContractDto> getContract() {
         return null;
     }
 
     @Override
-    public Contract findById(Long id) {
-        return repo.findById(id).orElseThrow();
+    public ContractDto findById(Long id) {
+        Contract result = repo.findById(id).orElseThrow();
+        ContractDto dto = new ContractDto();
+        BeanUtils.copyProperties(result, dto);
+        return dto;
     }
 
     @Override
-    public String create() {
-        return null;
+    public Long create(ContractCreateCommand command) {
+        Contract target = new Contract(
+                command.getContractName(),
+                command.getContractAbstract());
+        return repo.save(target);
     }
 }
