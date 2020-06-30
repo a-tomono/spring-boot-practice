@@ -6,22 +6,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Component
 @NoArgsConstructor
-public class ContractDto {
+public class ContractDto implements Serializable {
     private Long id;
     private String contractName;
     private String contractAbstract;
     //   private Person kou;
     //   private Person otsu;
-    private LocalDate createDate;
-    private LocalDate draftDate;
-    private LocalDate reviewedDate;
-    private LocalDate conclusionDate;
+    private LocalDateTime createDate;
+    private LocalDateTime draftDate;
+    private LocalDateTime reviewedDate;
+    private LocalDateTime conclusionDate;
     private ContractStatus status;
 
 }

@@ -2,16 +2,15 @@ package com.example.springbootpractice.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Contract {
+public class Contract implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,10 +19,11 @@ public class Contract {
     private String contractAbstract;
     //   private Person kou;
     //   private Person otsu;
-    private LocalDate createDate = LocalDate.now();
-    private LocalDate draftDate;
-    private LocalDate reviewedDate;
-    private LocalDate conclusionDate;
+    private LocalDateTime createDate = LocalDateTime.now();
+    private LocalDateTime draftDate;
+    private LocalDateTime reviewedDate;
+    private LocalDateTime conclusionDate;
+    @Enumerated(EnumType.STRING)
     private ContractStatus status = ContractStatus.INITIALIZED;
 
     public Contract(String contractName, String contractAbstract) {
@@ -31,19 +31,21 @@ public class Contract {
         this.contractAbstract = contractAbstract;
     }
 
-    public void draft() {
+    public void draft(String contractName, String contractAbstract) {
         if (isConclusion()) {
             throw new RuntimeException("can not draft signed contract");
         } else {
+            this.contractName = contractName;
+            this.contractAbstract = contractAbstract;
             status = ContractStatus.DRAFT;
-            draftDate = LocalDate.now();
+            draftDate = LocalDateTime.now();
         }
     }
 
     public void review() {
         if (isDraft()) {
             status = ContractStatus.REVIEWED;
-            reviewedDate = LocalDate.now();
+            reviewedDate = LocalDateTime.now();
         } else {
             throw new RuntimeException("can not review this contract");
         }
@@ -52,7 +54,7 @@ public class Contract {
     public void sign() {
         if (isReviewed()) {
             status = ContractStatus.CONCLUSION;
-            conclusionDate = LocalDate.now();
+            conclusionDate = LocalDateTime.now();
         } else {
             throw new RuntimeException("can not conclusion this contract");
         }
